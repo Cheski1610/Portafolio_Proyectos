@@ -4,6 +4,6 @@ En este portafolio, podrán explorar una variedad de proyectos que reflejan mi e
 
 ## Listado de Proyectos:
 
-### Análisis Exploratorio de Datos Automatizado: https://github.com/Cheski1610/EDAutomated.git
+**Análisis Exploratorio de Datos Automatizado:** https://github.com/Cheski1610/EDAutomated.git
 
-### Mapa Cantonal de Costa Rica: https://github.com/Cheski1610/mapacantonalcr.git
+**Mapa Cantonal de Costa Rica:** https://github.com/Cheski1610/mapacantonalcr.git
