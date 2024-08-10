@@ -12,8 +12,8 @@ En este portafolio, podrán explorar una variedad de proyectos que reflejan mi e
 
 ### - Análisis Geoespacial:
 
-[Mapa Cantonal de Costa Rica](https://github.com/Cheski1610/mapacantonalcr.git)
+- [Mapa Cantonal de Costa Rica](https://github.com/Cheski1610/mapacantonalcr.git)
 
 ### - Aplicaciones Web de Datos:
 
-[App para Predicción de Cargos por Seguros](https://github.com/Cheski1610/AppPycaret.git)
+- [App para Predicción de Cargos por Seguros](https://github.com/Cheski1610/AppPycaret.git)
