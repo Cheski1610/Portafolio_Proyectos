@@ -7,6 +7,8 @@ En este portafolio, podrán explorar una variedad de proyectos que reflejan mi e
 ### - Análisis Exploratorio de Datos:
 
 **Análisis Exploratorio de Datos Automatizado:** [EDAutomated](https://github.com/Cheski1610/EDAutomated.git)
+**Análisis Exploratorio sobre Informe Mundial de Felicidad (Python):** [EDA Informe Felicidad Mundial](./EDA - Informe Mundial de Felicidad (Python)) 
+**Análisis Exploratorio sobre Airbnb Milan 2019 (R):** [EDA Airbnb Milan 2019](./EDA - Airbnb Milan 2019 (R))
 
 ### - Análisis Geoespacial:
 
