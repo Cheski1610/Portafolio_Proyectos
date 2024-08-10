@@ -6,8 +6,12 @@ En este portafolio, podrán explorar una variedad de proyectos que reflejan mi e
 
 ### - Análisis Exploratorio de Datos:
 
-**Análisis Exploratorio de Datos Automatizado:** https://github.com/Cheski1610/EDAutomated.git
+**Análisis Exploratorio de Datos Automatizado:** [EDAutomated](https://github.com/Cheski1610/EDAutomated.git)
 
-**Mapa Cantonal de Costa Rica:** https://github.com/Cheski1610/mapacantonalcr.git
+### - Análisis Geoespacial:
 
-**App Pycaret:** https://github.com/Cheski1610/AppPycaret.git
+**Mapa Cantonal de Costa Rica:** [MapaCantonalCR](https://github.com/Cheski1610/mapacantonalcr.git)
+
+### - Aplicaciones Web de Datos:
+
+**App Modelos Predicción de Cargos por Seguros:** [AppPycaret](https://github.com/Cheski1610/AppPycaret.git)
