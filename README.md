@@ -6,14 +6,14 @@ En este portafolio, podrán explorar una variedad de proyectos que reflejan mi e
 
 ### - Análisis Exploratorio de Datos:
 
-**Análisis Exploratorio de Datos Automatizado:** [EDAutomated](https://github.com/Cheski1610/EDAutomated.git)
-**Análisis Exploratorio sobre Informe Mundial de Felicidad (Python):** [EDA Informe Felicidad Mundial](./EDA - Informe Mundial de Felicidad (Python)) 
-**Análisis Exploratorio sobre Airbnb Milan 2019 (R):** [EDA Airbnb Milan 2019](./EDA - Airbnb Milan 2019 (R))
+[Análisis Exploratorio de Datos Automatizado](https://github.com/Cheski1610/EDAutomated.git)
+[Análisis Exploratorio sobre Informe Mundial de Felicidad (Python)](https://github.com/Cheski1610/Portafolio_Proyectos/tree/main/EDA%20-%20Informe%20Mundial%20de%20Felicidad%20(Python))
+[Análisis Exploratorio sobre Airbnb Milan 2019 (R)](https://github.com/Cheski1610/Portafolio_Proyectos/tree/main/EDA%20-%20Airbnb%20Milan%202019%20(R))
 
 ### - Análisis Geoespacial:
 
-**Mapa Cantonal de Costa Rica:** [MapaCantonalCR](https://github.com/Cheski1610/mapacantonalcr.git)
+[Mapa Cantonal de Costa Rica](https://github.com/Cheski1610/mapacantonalcr.git)
 
 ### - Aplicaciones Web de Datos:
 
-**App Modelos Predicción de Cargos por Seguros:** [AppPycaret](https://github.com/Cheski1610/AppPycaret.git)
+[App para Predicción de Cargos por Seguros](https://github.com/Cheski1610/AppPycaret.git)
