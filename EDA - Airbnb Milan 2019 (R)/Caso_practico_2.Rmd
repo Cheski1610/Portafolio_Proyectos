@@ -1,0 +1,198 @@
+---
+title: "Caso_practico_2"
+output:
+  html_document:
+    df_print: paged
+autor: Josue Quirós
+---
+
+## Enunciado
+
+Se dispone del siguiente archivo CSV (descárgalo al final del enunciado) con información sobre los Air Bnb de la ciudad de Milán en 2019. En el dataset, solamente aparecen apartamentos completos. El dataset original y la explicación de todas las columnas está disponible en el siguiente enlace:
+
+https://www.kaggle.com/antoniokaggle/milan-airbnb-open-data-only-entire-apartments
+
+Con esta información, alumno debe realizar los siguientes procesos de analítica:
+
+* Cargar el archivo “Airbnb_Milan.csv” como dataframe.
+* Crear un nuevo dataframe que contenga únicamente las siguientes columnas:
+  * “host_is_superhost”
+  * “host_identity_verified”
+  * “bathrooms”
+  * “bedrooms”
+  * “daily_price”
+  * “security_deposit”
+  * “minimum_nights”
+  * “number_of_reviews”
+  * “review_scores_rating”
+* Cambiar los factores de la variable “host_is_superhost” de 0, 1 a: “SI” y, “NO”. (investigar la función recode).
+* Cambiar los factores de la variable “host_identity_verified” de 0, 1 a: “VERIFICA” y “NO VERIFICA”.
+* Mostrar un resumen estadístico de los datos.
+* Filtrar el dataset por apartamentos cuyo mínimo de noches sea igual o menor que siete.
+* ¿Cuál es el precio medio por día de una habitación en función de si el anfitrión tiene verificado o no su perfil?
+* Quién tiene más número de reseñas, ¿un super host o no super host?
+* Sobre la estadística anterior ¿quién tiene la puntuación media más alta?
+* Crea un vector categórico llamado “CATEGORÍA”, en función de que, si para la puntuación de las reseñas tiene de 0 a 49, sea “NO ACONSEJABLE”; de 50 a 75 sea “ESTÁNDAR”; y de 76 a 100 sea “TOP”.
+* Mostrar las frecuencias de la variable CATEGORÍA.
+* Obtener el histograma del precio por día.
+* Estudiar la relación entre los dormitorios y baños de forma gráfica.
+* Mostrar un histograma del número de reseñas en función de si es un usuario verificado o no.
+* Mostrar un histograma por cada valor de “CATEGORÍA” en el que se enseñe la cuantía del depósito de seguridad en función de si el anfitrión es super host o no.
+
+```{r}
+#Cargar Librerías
+
+library(tidyr)
+library(dplyr)
+library(ggplot2)
+```
+
+
+```{r}
+# Carga de Archivo CSV
+
+df_1 <- read.csv("Airbnb_Milan.csv", header = TRUE)
+```
+
+```{r}
+head(df_1)
+```
+```{r}
+# Medidas generales
+
+summary(df_1)
+```
+```{r}
+#Estructura del Dataset
+
+str(df_1)
+```
+
+```{r}
+# Seleccionar columnas indicadas
+
+df <- select(df_1, host_is_superhost, host_identity_verified, bathrooms, bedrooms, daily_price, security_deposit, minimum_nights, number_of_reviews, review_scores_rating)
+```
+
+```{r}
+str(df)
+```
+```{r}
+# cambiar valores variable "host_is_superhost"
+
+df$host_is_superhost <- as.factor(recode(df$host_is_superhost,'0' = 'NO', '1' = 'SI'))
+```
+
+```{r}
+# cambiar valores variable "host_identity_verified"
+
+df$host_identity_verified <- as.factor(recode(df$host_identity_verified,'0' = 'NO VERIFICA', '1' = 'VERIFICA'))
+```
+
+```{r}
+head(df)
+```
+```{r}
+#Resumen estadístico de los datos
+
+summary(df)
+```
+
+```{r}
+# Filtrado del dataset por apartamentos cuyo mínimo de noches sea igual o menor que siete.
+
+filter(df, minimum_nights <= 7)
+```
+
+```{r}
+# Precio medio por día de una habitación en función de si el anfitrión tiene verificado o no su perfil
+
+df %>% group_by(host_identity_verified) %>%
+  summarise(Precio_Medio = mean(daily_price))
+
+```
+
+```{r}
+# Numero de reseñas en funcion de si es super host o no
+
+df %>% group_by(host_is_superhost) %>%
+  summarise(Número_de_Reseñas = sum(number_of_reviews),
+            Puntuación_Media = mean(review_scores_rating))
+
+```
+Los que no son super host tienen más cantidad de reseñas.
+
+Los super host son los que tienen mejor puntuación promedio.
+
+```{r}
+# Vector categórico llamado “CATEGORÍA”, en función de que, si para la puntuación de las reseñas tiene de 0 a 49, sea “NO ACONSEJABLE”; de 50 a 75 sea “ESTÁNDAR”; y de 76 a 100 sea “TOP”.
+
+df <- mutate(df, categoria=cut(df$review_scores_rating, 
+                    breaks = c(0, 49, 75, 100),
+                    labels = c("NO ACONSEJABLE", "ESTÁNDAR", "TOP"),
+                    include.lowest = TRUE))
+```
+
+```{r}
+# Frecuencias de la variable CATEGORÍA
+
+table(df$categoria)
+```
+
+```{r}
+# Histograma del precio por día con gráficos base
+
+hist(df$daily_price,
+     ylab = 'Frecuencia',
+     xlab = 'Valores',
+     main = 'Histograma del Precio por Día',
+     col = 'lightblue',
+     border = 'blue')
+```
+
+```{r}
+# Histograma del precio por día con ggplot
+
+ggplot(df) +
+  geom_histogram(mapping = aes(daily_price), color='red', fill = 'lightblue', alpha = 0.8)+
+  ggtitle('Histograma del Precio por Día') + 
+  xlab("Valores") +
+  ylab("Frecuencia")
+```
+
+```{r}
+# Relación entre los dormitorios y baños
+
+ggplot(df) +
+  geom_point(mapping = aes(bedrooms, bathrooms)) + geom_smooth(aes(bedrooms, bathrooms)) +
+  ggtitle("Relación entre los Dormitorios y Baños") + 
+  xlab("Dormitorios") +
+  ylab("Baños")
+```
+
+Se visualiza que existe cierta relación esperada, al existir mayor cantidad de dormitorios, es de esperar que existan mayor cantidad de baños.
+
+```{r}
+# Histograma del número de reseñas en función de si es un usuario verificado o no
+
+ggplot(df, mapping = aes(number_of_reviews)) +
+  geom_histogram(aes(fill=host_identity_verified)) +
+  facet_wrap( ~ host_identity_verified) +
+  ggtitle("Histograma Número de Reseñas segmentado por Usuario Verificado o No") + 
+  xlab("Frecuencia") +
+  ylab("Valores")
+```
+
+```{r}
+# Mostrar un histograma por cada valor de “CATEGORÍA” en el que se enseñe la cuantía del depósito de seguridad en función de si el anfitrión es super host o no
+
+ggplot(df, mapping = aes(security_deposit)) +
+  geom_histogram(aes(fill=host_is_superhost)) +
+  facet_wrap( ~ categoria) +
+  labs(title = "Histograma Depósito de Seguridad por cada valor de “CATEGORÍA”", 
+       subtitle = "en función de si el anfitrión es super host o no") +
+  xlab("Frecuencia") +
+  ylab("Valores")
+```
+
+
