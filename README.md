@@ -17,3 +17,7 @@ En este portafolio, podrán explorar una variedad de proyectos que reflejan mi e
 ### - Aplicaciones Web de Datos:
 
 - [App para Predicción de Cargos por Seguros](https://github.com/Cheski1610/AppPycaret.git)
+
+### - Análisis Sistemas Predictivos
+
+- [Evaluación de las Predicciones del Sistema COMPAS]()
