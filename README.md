@@ -20,4 +20,4 @@ En este portafolio, podrán explorar una variedad de proyectos que reflejan mi e
 
 ### - Análisis Sistemas Predictivos
 
-- [Evaluación de las Predicciones del Sistema COMPAS]()
+- [Evaluación de las Predicciones del Sistema COMPAS](https://github.com/Cheski1610/Portafolio_Proyectos/tree/main/Evaluaci%C3%B3n%20Predicciones%20Sistema%20COMPAS)
