@@ -24,4 +24,4 @@ En este portafolio, podrán explorar una variedad de proyectos que reflejan mi e
 
 ### Desarrollo de Modelos
 
-- [Modelo de Regresión Lineal Regularizado para Predicción de Salarios]()
+- [Modelo de Regresión Lineal Regularizado para Predicción de Salarios](https://github.com/Cheski1610/Portafolio_Proyectos/tree/main/Regresi%C3%B3n%20Lineal%20Predicciones%20Salarios)
