@@ -1,0 +1,319 @@
+---
+title: "Caso Pŕactico Final Evaluable"
+output:
+  pdf_document: default
+  html_notebook: default
+  html_document: default
+  Nombre: Josué Quirós
+---
+
+Tomaremos el dataset Salaries.csv
+
+El conjunto de datos consiste en los salarios de nueve meses recogidos de 397 profesores universitarios en los EE.UU. durante 2008 y 2009. Además de los salarios, también se recogió el rango del profesor, el sexo, la disciplina, los años desde el doctorado y los años de servicio. Así, hay un total de 6 variables, que se describen a continuación.
+
+      1. rank: Categórica - de profesor asistente, profesor asociado o catedrático
+      2. discipline: Categórica - Tipo de departamento en el que trabaja el profesor, ya sea aplicado (B) o teórico (A)
+      3. yrs.since.phd: Continuo - Número de años desde que el profesor obtuvo su doctorado
+      4. yrs.service: Continuo - Número de años que el profesor ha prestado servicio al departamento y/o a la universidad
+      5. sex: Categórico - Sexo del profesor, hombre o mujer
+      6. salary: Continuo - Sueldo de nueve meses del profesor (USD)
+
+El objetivo de esta práctica consiste en realizar un estudio íntegro del dataset para terminar implementando un modelo lineal regularizado que realice predicciones sobre el salario a percibir de un profesor. Asimismo, se pedirá aprovechar la explicabilidad de estos modelos y los estudios estadísticos realizados para arrojar intuiciones y dependencias en los datos.
+
+Para ello, se pide al estudiante que realice los siguientes pasos:
+
+1. Carga los datos. Realiza una inspección por variables de la distribución de salarios en función de cada atributo visualmente. Realiza las observaciones pertinentes. ¿Qué variables son mejores para separar los datos?
+2. ¿Podemos emplear un test paramétrico para determinar si las medias de salarios entre hombres y mujeres son las mismas o difieren? Ten en cuenta que, en tanto que se pide usar un test paramétrico, se deberá determinar si las muestras cumplen con las hipótesis necesarias.
+3. Divide el dataset tomando las primeras 317 instancias como train y las últimas 80 como test. Entrena un modelo de regresión lineal con regularización Ridge y Lasso en train seleccionando el que mejor **MSE** tenga. Da las métricas en test. Valora el uso del One Hot Encoder, en caso de emplearlo arguméntalo.
+4. Estudia la normalidad de los residuos del modelo resultante, ¿detectas algún sesgo?
+5. ¿Qué conclusiones extraes de este estudio y del modelo implementado? ¿Consideras correcto el rendimiento del mismo?
+
+¡Mucho ánimo y espero que disfrutéis de esta última práctica!
+
+---------------------------------------------------------------------------
+
+#1
+
+1. Carga los datos. Realiza una inspección por variables de la distribución de salarios en función de cada atributo visualmente. Realiza las observaciones pertinentes. ¿Qué variables son mejores para separar los datos?
+
+
+Hacemos la carga del dataset
+
+```{r}
+datos <- read.csv("Salaries.csv", header=TRUE, na.strings = "?", row.names = 1)
+```
+
+Consultamos aspectos relevantes como la estructura, las dimensiones y las primeras filas para obtener una compresión inicial del dataset
+
+```{r}
+str(datos)
+dim(datos)
+head(datos)
+```
+
+Observamos estadísticas generales de los datos
+
+```{r}
+summary(datos)
+```
+Convertimos a factor las variables categóricas
+
+```{r}
+datos$rank <- as.factor(datos$rank)
+datos$discipline <- as.factor(datos$discipline)
+datos$sex <- as.factor(datos$sex)
+```
+
+Observamos las información general con el cambio realizado
+
+```{r}
+summary(datos)
+```
+Ahora gráficamos la distribución de los salarios por cada variable continua
+
+```{r}
+library(ggplot2)
+library(plyr)
+library(gridExtra)
+
+plot1 <- ggplot(data=datos, aes(x=yrs.since.phd, y=salary)) +
+    geom_point(color="red", alpha=0.3)+ 
+    labs(title = "Years since PHD vs Salary")
+
+plot2 <- ggplot(data=datos, aes(x=yrs.service, y=salary)) +
+    geom_point(color = "red", alpha=0.3)+ 
+    labs(title = "Year Service vs Salary", y = "")
+
+grid.arrange(plot1, plot2,  ncol = 2)
+```
+De acuerdo con las gráficas anteriores, existe cierta relación entre las variables yrs.service y yris.since.phd, donde a mayor cantidad de años, mayor es el salir, aunque se dan casos que no cumplen con dicha hipótesis.
+
+Ahora gráficamoss la distribución de los salarios por cada variable categórica
+
+```{r}
+plot3 <- ggplot(data=datos, aes(x=salary, fill=rank)) +
+    geom_histogram(position="dodge", color = "black", bins = 20) + 
+    labs(title = "Rank vs Salary")
+
+plot4 <- ggplot(data=datos, aes(x=salary, fill=discipline)) +
+    geom_histogram(position="dodge", color = "black", bins = 20) + 
+    labs(title = "Discipline vs Salary")
+
+plot5 <- ggplot(data=datos, aes(x=salary, fill=sex)) +
+    geom_histogram(position="dodge", color = "black", bins = 20) + 
+    labs(title = "Sex vs Salary")
+
+grid.arrange(plot3, plot4, plot5,  ncol = 2)
+
+```
+
+```{r}
+salario_promedio_disc <- aggregate(salary ~ discipline, data = datos, FUN = mean)
+
+salario_promedio_disc
+
+plot6 <- ggplot(salario_promedio_disc, aes(x = discipline, y = salary, fill = discipline)) +
+  geom_bar(stat = "identity", color = "black") +  
+  labs(title = "Mean Salary Vs Discipline", x = "Discipline", y = "Mean Salary") +
+  theme_minimal()  
+
+
+print(plot6)
+```
+
+
+De las gráficas anteriores se pueden dar las siguientes observaciones:
+
+- Notoriamente los catedráticos (rank=Prof) son los que tienen un salario más elevado
+
+- Con anterioridad ya se había evidenciado que la cantidad de hombres es considerablemente mayor que la cantidad de mujeres. Considerando lo anterior, son hombres los que presentan los salarios más altos, cercanos a los 200.000.
+
+- De la gráfica de Disciplina vs Salario no se puede concluir claramente que la disciplina B (Aplicado) tenga mejores salarios considerando que existe una mayor cantidad de profesionales de disciplina B, por eso se realiza una gráfica para validar que, en promedio, los profesores de departamento aplicado tienen mayor salario.
+
+- En cada una de las gráficas se puede visualizar un valor más lejano a los 200000, pero en las gráficas de years.since.phd y years.service se puede observar que corresponde a un profesor catedrático de disciplina aplicada con bastantes años de servicio y años desde que obtuvo su doctorado, por lo que no se considerará como anómalo.
+
+
+#2
+
+2. ¿Podemos emplear un test paramétrico para determinar si las medias de salarios entre hombres y mujeres son las mismas o difieren? Ten en cuenta que, en tanto que se pide usar un test paramétrico, se deberá determinar si las muestras cumplen con las hipótesis necesarias.
+
+Separamos dataset de acuerdo con el sexo
+```{r}
+hombres <- datos[datos$sex == 'Male',]
+mujeres <- datos[datos$sex == 'Female',]
+```
+
+Validamos normalidad en ambos conjuntos, a partir del test Shapiro y el gráfico QQ:
+
+Hombres>
+
+```{r}
+plot(density(hombres$salary))
+shapiro.test(hombres$salary)
+qqnorm(hombres$salary)
+qqline(hombres$salary)
+```
+Mujeres:
+
+```{r}
+plot(density(mujeres$salary))
+shapiro.test(mujeres$salary)
+qqnorm(mujeres$salary)
+qqline(mujeres$salary)
+```
+
+En este caso, no podemos usar un test paramétrico, ya que, los salarios de los hombres no tienen distribución normal y, aunque a partir del test de shapiro se aceptó la hipótesis nula (muestra distribuida normalmente) respecto a los salarios de las mujeres, en el gráfico QQ no se evidencia con claridad que exista una distribución normal.
+
+
+#3
+
+3. Divide el dataset tomando las primeras 317 instancias como train y las últimas 80 como test. Entrena un modelo de regresión lineal con regularización Ridge y Lasso en train seleccionando el que mejor **MSE** tenga. Da las métricas en test. Valora el uso del One Hot Encoder, en caso de emplearlo arguméntalo.
+
+No hay valores faltantes, por lo que no es necesario hacer imputaciones
+
+Utilizamos One Hot Encoder sobre las variables categóricas para obtener su representación dummy binaria. Es fundamental utilizar esta técnica principalmente para la variable "rank" ya que cuenta con tres opciones.Las variables "sex" y "discipline" podrían imputarse simplemente a 0 y a 1, pero por facilidad aplicaremos OHE a todas.
+
+```{r}
+datosOHE <- model.matrix(salary~.-1, datos)
+head(datosOHE)
+```
+Dividimos el dataset según las indicaciones
+
+Primero las variables predictoras
+
+```{r}
+X_train <- data.matrix(datosOHE[1:317,])
+X_test <- data.matrix(datosOHE[318:nrow(datosOHE),])
+
+dim(X_train)
+dim(X_test)
+```
+Ahora la variable objetivo
+
+```{r}
+y_train <- datos[1:317,]$salary
+y_test <- datos[318:nrow(datos), ]$salary
+
+head(y_train)
+head(y_test)
+```
+
+Aplicamos Ridge
+
+```{r}
+library(glmnet)
+set.seed(38)
+cv.ridge <- cv.glmnet(X_train, y_train, family='gaussian', alpha=0, type.measure='mse')
+# Resultados
+plot(cv.ridge)
+#este es el mejor valor de lambda
+cv.ridge$lambda.min
+#este es el valor del error que se estima para ese valor lambda mínimo dado en MSE
+min(cv.ridge$cvm)
+```
+
+Coeficientes para el valor de $\lambda$ óptimo.
+
+```{r}
+coef(cv.ridge, s=cv.ridge$lambda.min)
+```
+Obtenemos las predicciones de X_test
+
+```{r}
+predicciones <- predict.glmnet(cv.ridge$glmnet.fit, newx=X_test, s=cv.ridge$lambda.min)
+
+head(predicciones)
+```
+Calculamos MSE para el conjunto de Prueba
+
+```{r}
+mse_ridge <- mean((y_test - predicciones)^2)
+
+print(paste('MSE:', mse_ridge))
+```
+
+Luego, aplicamos Lasso
+
+```{r}
+set.seed(38)
+cv.lasso <- cv.glmnet(X_train, y_train, family='gaussian', alpha=1, type.measure='mse')
+# Resultados
+plot(cv.lasso)
+#este es el mejor valor de lambda
+cv.lasso$lambda.min
+#este es el valor del error que se estima para ese valor lambda mínimo dado en MSE
+min(cv.lasso$cvm)
+```
+
+Coeficientes para el valor de $\lambda$ óptimo.
+
+```{r}
+coef(cv.lasso, s=cv.lasso$lambda.min)
+```
+Se ha establecido como nulo la variable "rankAssocProf", eso quiere decir que aportaba muy poco al modelo
+
+Ahora, obtenemos las predicciones de X_test
+
+```{r}
+predicciones_lasso <- predict.glmnet(cv.lasso$glmnet.fit, newx=X_test, s=cv.lasso$lambda.min)
+
+head(predicciones_lasso)
+```
+Calculamos MSE para el conjunto de Prueba
+
+```{r}
+mse_lasso <- mean((y_test - predicciones_lasso)^2)
+
+print(paste('MSE:', mse_lasso))
+```
+
+De acuerdo con el MSE obtenido para cada modelo regularizado, considerando tanto el rendimiento obtenido con los datos de entrenamiento, como los datos de prueba, se debe utilizar el modelo de Ridge.
+
+#4
+
+4. Estudia la normalidad de los residuos del modelo resultante, ¿detectas algún sesgo?
+
+Utilizamos un gráfico QQ para estudiar los residuos del modelo Ridge
+
+```{r}
+qqnorm((y_test - predicciones))
+qqline((y_test - predicciones))
+```
+Observamos que la mayoría de los datos se encuentran relativamente sobre la recta, lo cual indica que la distribución de los residuos puede aproximarse por una normal, sin embargo, podemos ver también una desviación fuerte en los cuantiles más altos, demostrando subestimaciones, o sea, proyecciones muy por debajo respecto a los valores reales.Además en los cuantiles más bajos podemos un observar residuo que se aleja significativamente de recta normal, lo que podría representar la presencia de outliers.
+
+#5
+
+5. ¿Qué conclusiones extraes de este estudio y del modelo implementado? ¿Consideras correcto el rendimiento del mismo?
+
+- Es razonable que la categoría Prof de la variable rank sea la que más aporta positivamente a la proyección del modelo, considerando que como se vió en los gráficos de la primera parte, dicha categoría tenía los salarios más altos.
+
+- Hay salarios que, respecto a la cantidad de años de servicio y de años desde que sacaron el doctorado, presentan valores bajos respecto al comportamiento general de los datos, lo cual podría estar incidiendo en el parámetro negativo que se le asigna a la variable years.since.phd.
+
+- En definitiva se tienen outliers que están afectando el rendimiento del modelo, por lo que haciendo una imputación de estos podríamos obtener un mejor rendimiento. 
+
+- Como se mencionó anteriormente, los profesores de disciplina B y de sexo masculino son los mejor pagados y se evidencia más fuertemente al ser los parámetros que más aportan a la proyección, después de la categoría Prof de la variable rank.
+
+
+Respecto al rendimiento, procedemos a calcular el coeficiente de determinación ajustado del modelo para dar una conclusión más clara: 
+
+
+```{r}
+adjusted_r2 <- function(pred, actual, n, p) {
+  ss_total <- sum((actual - mean(actual))^2)
+  ss_residual <- sum((actual - pred)^2)
+  r2 <- 1 - (ss_residual / ss_total)
+  r2_adjusted <- 1 - ((1 - r2) * (n - 1) / (n - p - 1))
+  return(r2_adjusted)
+}
+```
+
+```{r}
+n <- nrow(X_test)  # Número de observaciones
+p <- ncol(X_train)  # Número de predictores
+
+r2_ajustado <- adjusted_r2(predicciones, y_test, n, p)
+print(paste("R² ajustado:", r2_ajustado))
+```
+
+Esto quiere decir que el modelo solo estaría explicando el 22.85% de la variabilidad de la variable objetivo, por lo que el modelo no estaría reflejando bien la relación entre las variables predictoras y la variable objetivo.
+
