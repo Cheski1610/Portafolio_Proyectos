@@ -22,6 +22,6 @@ En este portafolio, podrán explorar una variedad de proyectos que reflejan mi e
 
 - [Evaluación de las Predicciones del Sistema COMPAS](https://github.com/Cheski1610/Portafolio_Proyectos/tree/main/Evaluaci%C3%B3n%20Predicciones%20Sistema%20COMPAS)
 
-### Desarrollo de Modelos
+### - Desarrollo de Modelos
 
-- [Modelo de Regresión Lineal Regularizado para Predicción de Salarios](https://github.com/Cheski1610/Portafolio_Proyectos/tree/main/Regresi%C3%B3n%20Lineal%20Predicciones%20Salarios)
+- [Modelo de Regresión Lineal Regularizado para Predicción de Salarios (R)](https://github.com/Cheski1610/Portafolio_Proyectos/tree/main/Regresi%C3%B3n%20Lineal%20Predicciones%20Salarios)
