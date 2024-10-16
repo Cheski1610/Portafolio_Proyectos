@@ -26,3 +26,7 @@ En este portafolio, podrán explorar una variedad de proyectos que reflejan mi e
 
 - [Modelo de Regresión Lineal Regularizado para Predicción de Salarios (R)](https://github.com/Cheski1610/Portafolio_Proyectos/tree/main/Regresi%C3%B3n%20Lineal%20Predicciones%20Salarios)
 - [Modelo de Clasificación sobre la Intención de Compra en una Tienda Online](https://github.com/Cheski1610/Portafolio_Proyectos/tree/main/Modelado%20Intenci%C3%B3n%20Compra%20Online)
+
+### - Problemas de Optimización
+
+- [Optimización de Campañas de marketing online con Aprendizaje por Refuerzo]()
