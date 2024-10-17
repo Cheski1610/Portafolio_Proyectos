@@ -29,4 +29,4 @@ En este portafolio, podrán explorar una variedad de proyectos que reflejan mi e
 
 ### - Problemas de Optimización
 
-- [Optimización de Campañas de marketing online con Aprendizaje por Refuerzo]()
+- [Optimización de Campañas de marketing online con Aprendizaje por Refuerzo](https://github.com/Cheski1610/Portafolio_Proyectos/tree/main/Optimizaci%C3%B3n%20Campa%C3%B1a%20de%20Marketing%20Online)
