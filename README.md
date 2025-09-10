@@ -4,9 +4,9 @@ En este portafolio, podrán explorar una variedad de proyectos que reflejan mi e
 
 ## Listado de Proyectos:
 
-### - Desarrollo de Agentes
+### - Desarrollo de Agentes Y Asistentes con IA:
 
-- [Predictor de Variables Económicas y Análisis de Noticias con IA](https://github.com/Cheski1610/Economic_SmolAgents)
+- [Predictor de Variables Económicas y Análisis de Noticias con IA](https://github.com/Cheski1610/proyecto_tfm)
 
 ### - Análisis Exploratorio de Datos:
 
