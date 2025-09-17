@@ -8,6 +8,10 @@ En este portafolio, podrán explorar una variedad de proyectos que reflejan mi e
 
 - [Predictor de Variables Económicas y Análisis de Noticias con IA (Trabajo Final de Máster)](https://github.com/Cheski1610/proyecto_tfm)
 
+### - Aplicaciones con LLMs:
+
+- [Apliación RAG con Qwen3](https://github.com/Cheski1610/Rag_Qwen3)
+
 ### - Análisis Exploratorio de Datos:
 
 - [Análisis Exploratorio de Datos Automatizado](https://github.com/Cheski1610/EDAutomated.git) 
