@@ -7,6 +7,7 @@ En este portafolio, podrán explorar una variedad de proyectos que reflejan mi e
 ### - Desarrollo de Agentes y Asistentes con IA:
 
 - [Predictor de Variables Económicas y Análisis de Noticias con IA (Trabajo Final de Máster)](https://github.com/Cheski1610/proyecto_tfm)
+- [Agente de Optimización y Evaluación de Portafolios de Inversión](https://github.com/Cheski1610/Agente_Evaluador_Portafolios)
 
 ### - Aplicaciones con LLMs:
 
