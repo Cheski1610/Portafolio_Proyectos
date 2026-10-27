@@ -1,4 +1,6 @@
-![Portada del portafolio](./Imagenes/Portada.png)
+<div align="center">
+  <img src="./assets/images/portfolio-banner.png" alt="Portafolio de proyectos de ciencia de datos e inteligencia artificial" width="100%">
+</div>
 
 # Portafolio de Ciencia de Datos e Inteligencia Artificial
 
